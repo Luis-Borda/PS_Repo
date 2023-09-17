@@ -55,7 +55,7 @@ colnames(vacios)[1]<- "Cantidad_vacios"
 
 ## Se seleccionan las varaibles de interés
 base2 <- base %>%
-  select(directorio,estrato1,sex,age,p6240,p6426,ina,maxEducLevel,ocu,dsi,
+  select(directorio,estrato1,sex,age,p6240,p6426,maxEducLevel,ocu,dsi,
          y_total_m,y_total_m_ha,ingtot,ingtotob,microEmpresa,cuentaPropia,formal, 
          oficio,p6210,p7090,hoursWorkUsual,relab,sizeFirm)
 
@@ -67,5 +67,10 @@ base_filtrada <- subset(base2, base2$age >= 18 & base2$ocu == 1)
 nombres <- colnames(base)
 write.csv(nombres,"Nombres varaibles.csv")
 
+#eliminamos las observaciones con NA de nuestra variable de interes, no se imputa
+#Nos queda una observación con NA en maxEducLevel, la eliminamos
 
+base_final <- base_filtrada %>% filter(y_total_m_ha != "NA")
 
+base_final <- base_final %>% filter(maxEducLevel != "NA")
+data.frame(apply(X = is.na(base_final), MARGIN =2, FUN = sum))
