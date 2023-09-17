@@ -169,3 +169,9 @@ boxplot(b_final$y_total_m_ha ~ b_final$relab,
         xlab = "Trabajo", ylab = "Ingreso",
         main = "Figura 4 Ingreso vs Trabajo")
 
+
+scatter.smooth(b_final$hoursWorkUsual, b_final$y_total_m_ha, span = 2/3, degree = 1,
+               family = "symmetric",
+               xlab = "Horas trabajadas", ylab = "Ingreso",
+               evaluation = 50, col = "green")  
+
