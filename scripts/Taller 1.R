@@ -10,7 +10,7 @@ rm(list = ls())
 #CARGAMOS LOS PAQUETES
 
 
-library(pacman)
+require(pacman)
 
 p_load(rio,
        tidyverse,
@@ -28,7 +28,7 @@ library(tidyr)
 
 #CREAMOS UN DIRECTORIO
 
-setwd("/Users/lordb/OneDrive - Universidad de los andes/2. GRUPOS/2. BIG DATA/PS_Repo_Taller1_G10/scripts")
+setwd("/Users/lordb/OneDrive - Universidad de los andes/2. GRUPOS/2. BIG DATA/PS_Repo_Taller1_G10")
 
 #Hacemos el scraping
 
@@ -57,7 +57,7 @@ colnames(vacios)[1]<- "Cantidad_vacios"
 base2 <- base %>%
   select(directorio,estrato1,sex,age,p6240,p6426,maxEducLevel,ocu,dsi,
          y_total_m,y_total_m_ha,ingtot,ingtotob,microEmpresa,cuentaPropia,formal, 
-         oficio,p6210,p7090,hoursWorkUsual,relab,sizeFirm)
+         oficio,p6210,p7090,hoursWorkUsual,relab,sizeFirm, college)
 
 ## Se filtra la base ##
 base_filtrada <- subset(base2, base2$age >= 18 & base2$ocu == 1)
@@ -70,7 +70,28 @@ write.csv(nombres,"Nombres varaibles.csv")
 #eliminamos las observaciones con NA de nuestra variable de interes, no se imputa
 #Nos queda una observación con NA en maxEducLevel, la eliminamos
 
-base_final <- base_filtrada %>% filter(y_total_m_ha != "NA")
+b_final <- base_filtrada %>% filter(y_total_m_ha != "NA")
 
-base_final <- base_final %>% filter(maxEducLevel != "NA")
-data.frame(apply(X = is.na(base_final), MARGIN =2, FUN = sum))
+b_final <- b_final %>% filter(maxEducLevel != "NA")
+data.frame(apply(X = is.na(b_final), MARGIN =2, FUN = sum))
+summary(base_final)
+
+b_final <- b_final %>% 
+  mutate(age_2 = age^2)
+
+b_final <- b_final %>%
+  mutate(log_Ingresos = log(y_total_m_ha))
+
+b_final$female <- ifelse(b_final$sex == 0, 1, 0) %>% as.numeric()
+
+hist(b_final$estrato1)
+hist(b_final$relab)
+hist(b_final$sizeFirm)
+hist(b_final$oficio)
+hist(b_final$maxEducLevel)
+hist(b_final$p6240)
+
+write.csv(b_final,file = "stores/base_final.csv",row.names = FALSE)
+
+
+
