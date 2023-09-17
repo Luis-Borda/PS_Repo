@@ -69,7 +69,6 @@ write.csv(nombres,"Nombres varaibles.csv")
 
 #eliminamos las observaciones con NA de nuestra variable de interes, no se imputa
 #Nos queda una observación con NA en maxEducLevel, la eliminamos
-
 b_final <- base_filtrada %>% filter(y_total_m_ha != "NA")
 
 b_final <- b_final %>% filter(maxEducLevel != "NA")
@@ -84,14 +83,79 @@ b_final <- b_final %>%
 
 b_final$female <- ifelse(b_final$sex == 0, 1, 0) %>% as.numeric()
 
+
+write.csv(b_final,file = "stores/b_final.csv",row.names = FALSE)
+
+#read_csv("stores/b_final.csv")
+#View(b_final)
+
+################################################################################
+##ESTADISTICAS DESCRIPTIVAS 
+################################################################################
+
+
 hist(b_final$estrato1)
 hist(b_final$relab)
 hist(b_final$sizeFirm)
-hist(b_final$oficio)
 hist(b_final$maxEducLevel)
 hist(b_final$p6240)
 
-write.csv(b_final,file = "stores/base_final.csv",row.names = FALSE)
+#Se defninen las variables categoricas
+
+Categoricas <- c("estrato1","relab","sizeFirm","maxEducLevel","p6240")
+
+# Iterar a través de las columnas en el vector Categoricas
+for (v in Categoricas) {
+  # Seleccionar la columna v del dataframe b_final y convertirla en factor
+  b_final[, v] <- as.factor(b_final[, v, drop = TRUE])
+}
 
 
+edad <- ggplot(data = b_final,
+               mapping = aes(x = age))  + 
+  geom_histogram(aes(y =after_stat(density)),
+                 bins = 5,
+                 position = 'identity',
+                 color="black", fill="gray" ) +
+  stat_function(fun = dnorm, xlim = c(min(b_final$age),max(b_final$age)), colour="green", linewidth=1,
+                args = list(mean = mean(b_final$age), 
+                            sd = sd(b_final$age))) + 
+  labs(title = 'Figura 1: Distribución de edad',
+       x = 'Edad',
+       y = 'Frecuencia') + 
+  theme_bw()
+
+edad
+
+
+Ingreso <- ggplot(data = b_final,
+                  mapping = aes(x = y_total_m_ha))  + 
+  geom_histogram(aes(y =after_stat(density)),
+                 bins = 5,
+                 position = 'identity',
+                 color="black", fill="gray" ) +
+  stat_function(fun = dnorm, xlim = c(min(b_final$y_total_m_ha),max(b_final$y_total_m_ha)), colour="green", linewidth=1,
+                args = list(mean = mean(b_final$y_total_m_ha), 
+                            sd = sd(b_final$y_total_m_ha))) + 
+  labs(title = 'Figura 1: Distribución del ingreso',
+       x = 'Edad',
+       y = 'Frecuencia') + 
+  theme_bw()
+Ingreso
+
+histogram(b_final$y_total_m_ha)
+
+# Crear un gráfico de dispersión con una curva de suavizado en color
+scatter.smooth(b_final$age, b_final$y_total_m_ha, span = 2/3, degree = 1,
+               family = "symmetric",
+               xlab = "Edad", ylab = "Ingreso",
+               evaluation = 50, col = "blue") 
+title("Figura 2 Relación entre Edad e Ingreso")
+
+# Crear un gráfico de dispersión con una curva de suavizado en color
+scatter.smooth(b_final$estrato1, b_final$y_total_m_ha, span = 2/3, degree = 1,
+               family = "symmetric",
+               xlab = "Estrato", ylab = "Ingreso",
+               evaluation = 50, col = "green")  
+title("Figura 2 Relación entre Estrato e Ingreso")
 
