@@ -159,3 +159,13 @@ scatter.smooth(b_final$estrato1, b_final$y_total_m_ha, span = 2/3, degree = 1,
                evaluation = 50, col = "green")  
 title("Figura 2 Relación entre Estrato e Ingreso")
 
+# Crear un gráfico de cajas y bigotes con estrato1 en el eje X y y_total_m_ha en el eje Y
+boxplot(b_final$y_total_m_ha ~ b_final$estrato1, 
+        xlab = "Estrato", ylab = "Ingreso",
+        main = "Figura 3 Ingreso vs Estrato")
+
+# Crear un gráfico de cajas y bigotes con relab en el eje X y y_total_m_ha en el eje Y
+boxplot(b_final$y_total_m_ha ~ b_final$relab, 
+        xlab = "Trabajo", ylab = "Ingreso",
+        main = "Figura 4 Ingreso vs Trabajo")
+
