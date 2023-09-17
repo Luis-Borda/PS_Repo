@@ -66,3 +66,6 @@ base_filtrada <- subset(base2, base2$age >= 18 & base2$ocu == 1)
 
 nombres <- colnames(base)
 write.csv(nombres,"Nombres varaibles.csv")
+
+
+
