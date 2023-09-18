@@ -1,4 +1,4 @@
-# Problem Set Template Repository for Big Data and Machine Learning for Applied Economics
+# Problem Set 1: Predicting Income
 
 This is the template repository for the problem sets.
 
