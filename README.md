@@ -23,7 +23,9 @@ Bajo este contexto, el desarrollo de análisis precisos sobre los ingresos de la
 ## Document
 En esta carpeta se encuentra el documento en el cual se desarrollo el problem set. El documento inicia con corta introducción, posteriormente en la segunda sección, se hace una descripción de los datos utilizados incluyendo información relevante sobre la GEIH, el proceso de obtención y limpieza de los datos y algunas estadísticas descriptivas de las variables utilizadas. Luego, en la sección 3 se presenta un análisis de la relación edad salario, sobre el entendido que los salarios tienden a ser bajos cuando el trabajador es joven e incrementan a medida que envejece. En la sección 4, se hace un análisis de la brecha salarial por genero, presentando las estimaciones obtenidas y discutiendo los resultados a la luz de los modelos planteados. En la sección 5, se hace una predicción de las ganancias, haciendo uso de 5 modelos con diferentes niveles de complejidad y se compara su desempeño predictivo en terminos del MSE. Finalmente, se presentan unas conclusiones.
 
-#Scripts
+## Scripts
+
+En esta carpeta se encuentran los scripts estructurados para desarrollar el problem set. El primer script hace referencia al punto 1 donde se hace la 
 
 #Stores
 
