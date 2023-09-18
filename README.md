@@ -27,8 +27,16 @@ En esta carpeta se encuentra el documento en el cual se desarrollo el problem se
 
 En esta carpeta se encuentran los scripts estructurados para desarrollar el problem set. El primer script hace referencia al punto 1 donde se hace la 
 
-#Stores
+# Stores
 
-#Views
+En esta carpeta se aloja la base de datos utilizada para realizar el problem set. Para este caso particular, la información proviene de la GEIH la cual proporciona información estadística sobre el tamaño y estructura de la fuerza de trabajo (empleo, desempleo y población fuera de la fuerza de trabajo), los ingresos laborales y no laborales de los hogares, la pobreza monetaria y la pobreza monetaria extrema de la población residente en el país​.  
+
+# Views
+
+En esta carpeta se encuentran las gráficas en formato pdf y las tablas con las estadísticas descriptivas de las variables y los resultados de las estimaciones realizadas.
+
+# Algunos resultados del análisis 
+
+
 
 
