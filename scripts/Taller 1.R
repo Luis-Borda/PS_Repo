@@ -1,4 +1,7 @@
-####################### TALLER 1 ##########################
+################################################################################
+##                                TALLER 1                                    ##
+################################################################################
+
 ######## PUNTO 1 #######
 #### CARGUE DE BASE ####
 ## Creamos un vector con los diferentes links ##
@@ -94,7 +97,9 @@ write.csv(b_final,file = "stores/b_final.csv",row.names = FALSE)
 ################################################################################
 
 
+# 1. Crear el histograma
 hist(b_final$estrato1)
+
 hist(b_final$relab)
 hist(b_final$sizeFirm)
 hist(b_final$maxEducLevel)
@@ -120,7 +125,7 @@ edad <- ggplot(data = b_final,
   stat_function(fun = dnorm, xlim = c(min(b_final$age),max(b_final$age)), colour="green", linewidth=1,
                 args = list(mean = mean(b_final$age), 
                             sd = sd(b_final$age))) + 
-  labs(title = 'Figura 1: Distribución de edad',
+  labs(title = 'Distribución de edad',
        x = 'Edad',
        y = 'Frecuencia') + 
   theme_bw()
@@ -137,7 +142,7 @@ Ingreso <- ggplot(data = b_final,
   stat_function(fun = dnorm, xlim = c(min(b_final$y_total_m_ha),max(b_final$y_total_m_ha)), colour="green", linewidth=1,
                 args = list(mean = mean(b_final$y_total_m_ha), 
                             sd = sd(b_final$y_total_m_ha))) + 
-  labs(title = 'Figura 1: Distribución del ingreso',
+  labs(title = 'Distribución del ingreso',
        x = 'Edad',
        y = 'Frecuencia') + 
   theme_bw()
@@ -150,28 +155,28 @@ scatter.smooth(b_final$age, b_final$y_total_m_ha, span = 2/3, degree = 1,
                family = "symmetric",
                xlab = "Edad", ylab = "Ingreso",
                evaluation = 50, col = "blue") 
-title("Figura 2 Relación entre Edad e Ingreso")
+title("Relación entre Edad e Ingreso")
 
 # Crear un gráfico de dispersión con una curva de suavizado en color
 scatter.smooth(b_final$estrato1, b_final$y_total_m_ha, span = 2/3, degree = 1,
                family = "symmetric",
                xlab = "Estrato", ylab = "Ingreso",
                evaluation = 50, col = "green")  
-title("Figura 2 Relación entre Estrato e Ingreso")
+title("Relación entre Estrato e Ingreso")
 
 # Crear un gráfico de cajas y bigotes con estrato1 en el eje X y y_total_m_ha en el eje Y
 boxplot(b_final$y_total_m_ha ~ b_final$estrato1, 
         xlab = "Estrato", ylab = "Ingreso",
-        main = "Figura 3 Ingreso vs Estrato")
+        main = "Ingreso vs Estrato")
 
 # Crear un gráfico de cajas y bigotes con relab en el eje X y y_total_m_ha en el eje Y
 boxplot(b_final$y_total_m_ha ~ b_final$relab, 
-        xlab = "Trabajo", ylab = "Ingreso",
-        main = "Figura 4 Ingreso vs Trabajo")
+        xlab = "Tipo de ocupación", ylab = "Ingreso",
+        main = "Ingreso vs Tipo de ocupación")
 
 
 scatter.smooth(b_final$hoursWorkUsual, b_final$y_total_m_ha, span = 2/3, degree = 1,
                family = "symmetric",
                xlab = "Horas trabajadas", ylab = "Ingreso",
                evaluation = 50, col = "green")  
-
+title("Ingreso vs horas trabajadas")
