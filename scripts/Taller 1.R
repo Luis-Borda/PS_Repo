@@ -25,6 +25,7 @@ p_load(rio,
        knitr,
        boot,
        data.table)
+
 install.packages("ggplot2")
 install.packages("openxlsx")
 library(openxlsx)
