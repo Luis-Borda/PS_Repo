@@ -25,7 +25,10 @@ p_load(rio,
        knitr,
        boot,
        data.table)
-
+install.packages("ggplot2")
+install.packages("openxlsx")
+library(openxlsx)
+library(ggplot2)
 library(dplyr)
 library(tidyr)
 
