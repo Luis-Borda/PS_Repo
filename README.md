@@ -3,8 +3,11 @@
 Integrantes:
 
 Luis Olegario Borda Silva
+
 Julian Santiago Muñoz Garrido
+
 Joan Sebastián Potosí Hoyos
+
 Juan Felipe Vargas Guacheta
 
 # Introducción
