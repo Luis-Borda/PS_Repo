@@ -95,6 +95,17 @@ write.csv(b_final,file = "stores/b_final.csv",row.names = FALSE)
 ################################################################################
 ##ESTADISTICAS DESCRIPTIVAS 
 ################################################################################
+library(stargazer)
+library(knitr)
+Descrip <- b_final %>%
+  select(directorio,estrato1,sex,age,p6240,p6426,maxEducLevel,ocu,dsi,
+         y_total_m,y_total_m_ha,ingtot,ingtotob,microEmpresa,cuentaPropia,formal, 
+         oficio,p6210,p7090,hoursWorkUsual,relab,sizeFirm)
+
+Descriptivas <- summary(Descrip)
+tabla_descriptiva <-kable(Descriptivas, caption = "Estadísticas descriptivas")
+
+write.csv(tabla_descriptiva, "stores/tabla_descriptiva.csv")
 
 
 # 1. Crear el histograma
