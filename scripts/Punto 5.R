@@ -70,9 +70,8 @@ splt <- lapply(1:K, function(ind) base_filtrada2[index[[ind]], ])
 install.packages("data.table")
 library(data.table)
 
-## Modelo 5
-m1 <- lapply(1:K, function(ii) lm(log_w~poly(mujer,1,raw=TRUE):poly(p6240,3,raw=TRUE)+poly(age,1,raw=TRUE)+
-                                    poly(age,2,raw=TRUE):poly(p6426,2,raw=TRUE):poly(maxEducLevel)+poly(estrato1,1,raw=TRUE), data = rbindlist(splt[-ii]))) 
+## Modelo Mujer
+m1 <- lapply(1:K, function(ii) lm(log_w~mujer, data = rbindlist(splt[-ii]))) 
 p1 <- lapply(1:K, function(ii) data.frame(predict(m1[[ii]], newdata = rbindlist(splt[ii]))))
 for (i in 1:K) {
   colnames(p1[[i]])<-"yhat" #change the name
@@ -83,9 +82,8 @@ MSE2_k <- lapply(1:K, function(ii) mean((splt[[ii]]$log_w - splt[[ii]]$yhat)^2))
 
 MSE2_k
 
-## Modelo 4
-m2 <- lapply(1:K, function(ii) lm(log_w~poly(mujer,1,raw=TRUE)+poly(age,2,raw=TRUE)+
-                                    poly(p6426,2,raw=TRUE):poly(p6240,3,raw=TRUE)+poly(estrato1,1,raw=TRUE):poly(maxEducLevel) , data = rbindlist(splt[-ii]))) 
+## Modelo Edad
+m2 <- lapply(1:K, function(ii) lm(log_w~age+age_2 , data = rbindlist(splt[-ii]))) 
 p2 <- lapply(1:K, function(ii) data.frame(predict(m2[[ii]], newdata = rbindlist(splt[ii]))))
 for (i in 1:K) {
   colnames(p2[[i]])<-"yhat" #change the name
