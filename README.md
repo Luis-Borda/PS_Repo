@@ -27,7 +27,7 @@ En esta carpeta se encuentra el documento en el cual se desarrollo el problem se
 
 En esta carpeta se encuentran los scripts estructurados para desarrollar el problem set organizados de la siguiente manera:
 
-- `punto 2 - descriptivas`: Aquí se encuentra el código utilizado para hacer el web scraping y consolidar la base de datos. Además, contiene el análisis descriptivo de las variables a utilizar.
+- `Punto 2 - descriptivas`: Aquí se encuentra el código utilizado para hacer el web scraping y consolidar la base de datos. Además, contiene el análisis descriptivo de las variables a utilizar.
 - `Punto 2 - Datos Faltantes`: En este script se encuentra el proceso utilizado para la imputación de datos a partir de una regresión estocástica.
 - `Punto 3`: Aquí se estima el perfil de edad-salario de los individuos de esta muestra que da respuesta al punto 3 del problem set.
 - `Punto 4`: En este script se estima la brecha de ingresos por genero que da respuesta al punto 4 del problem set.
