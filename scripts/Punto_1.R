@@ -9,7 +9,6 @@ rm(list = ls())
 #CARGAMOS LOS PAQUETES
 
 require(pacman)
-
 p_load(rio,
        tidyverse,
        skimr,
@@ -184,6 +183,19 @@ ggplot(data=base_filtrada)+
   labs(x="Edad", y="Ingreso")
 
  +
+  
+  
+ggplot(data=base_filtrada)+ 
+  geom_smooth(mapping = aes(x =p6426, y =y_total_m_ha))+
+  scale_y_continuous (labels=function(n) {format(n, scientific = FALSE)})+
+  labs(x="Experiencia", y="Ingreso")
+
+ggplot(data=base_filtrada)+ 
+  geom_point(mapping = aes(x =p6426, y =y_total_m_ha))+
+  scale_y_continuous (labels=function(n) {format(n, scientific = FALSE)})+
+  labs(x="Experiencia", y="Ingreso")
+
++
 
 
 
@@ -325,13 +337,3 @@ scatter.smooth(b_final$hoursWorkUsual, b_final$y_total_m_ha, span = 2/3, degree 
                xlab = "Horas trabajadas", ylab = "Ingreso",
                evaluation = 50, col = "green")  
 title("Ingreso vs horas trabajadas")
-
-
-
-#### LIMPIEZA DE DATOS ####
-summary(base)
-str(base)
-## Se realizo una tabla de datos vacios
-vacios <- data.frame(apply(X = is.na(base), MARGIN =2, FUN = sum))
-vacios$porcentaje_vacios <- round(vacios$apply.X...is.na.base...MARGIN...2..FUN...sum./32177,3)
-colnames(vacios)[1]<- "Cantidad_vacios"
