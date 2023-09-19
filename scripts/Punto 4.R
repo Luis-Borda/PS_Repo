@@ -61,3 +61,18 @@ require(boot)
 set.seed(123)
 resultS <-  boot(base_filtrada3, fwl_boot, R = 1000)
 resultS
+
+###C
+### Plot relación máximo años de educación con salario por hora (Edad-salario profile)
+
+ggplot(summ) + 
+  geom_point(
+    aes(x = age, y = mean_y),
+    color = "darkred", size = 2
+  ) + 
+  labs(
+    title = "Relación máximo Años de Educación y Salario por Horas",
+    x = "Máximo años de Educación",
+    y = "ln Salario por horas"
+  ) +
+  theme_bw()
