@@ -25,7 +25,10 @@ En esta carpeta se encuentra el documento en el cual se desarrollo el problem se
 
 ## Scripts
 
-En esta carpeta se encuentran los scripts estructurados para desarrollar el problem set. El primer script hace referencia al punto 1 donde se hace la 
+En esta carpeta se encuentran los scripts estructurados para desarrollar el problem set organizados de la siguiente manera:
+
+- `punto 2 - descriptivas`: Aquí se encuentra el código utilizado para hacer el web scraping y consolidar la base de datos. Además, contiene el análisis descriptivo de las variables a utilizar
+
 
 ## Stores
 
