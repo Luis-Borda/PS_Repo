@@ -1,17 +1,12 @@
-################################################################################
-##                                TALLER 1                                    ##
-################################################################################
 
-######## PUNTO 1 #######
-#### CARGUE DE BASE ####
-## Creamos un vector con los diferentes links ##
+############################## PUNTO 1 ########################################
+
 
 #Limpieza del área de trabajo 
 
 rm(list = ls())
 
 #CARGAMOS LOS PAQUETES
-
 
 require(pacman)
 
@@ -28,19 +23,28 @@ p_load(rio,
 
 install.packages("ggplot2")
 install.packages("openxlsx")
+install.packages("xlsx")
+install.packages("mice")
 library(openxlsx)
 library(ggplot2)
 library(dplyr)
 library(tidyr)
+library (mice)
+library(rvest)
+library (skimr)
+library(xlsx)
 
 #CREAMOS UN DIRECTORIO
 
 setwd("/Users/lordb/OneDrive - Universidad de los andes/2. GRUPOS/2. BIG DATA/PS_Repo_Taller1_G10")
 
-#Hacemos el scraping
+###############################################################################
+############### web scrapping para consolidar la base de datos ################
+################################################################################
+
+#Se crea un objeto con el link
 
 link <- paste0("https://ignaciomsarmiento.github.io/GEIH2018_sample/pages/geih_page_", 1:10, ".html")
-
 
 ## Se hace un bucle que una las 10 bases
 base <- data.frame()
@@ -52,22 +56,148 @@ for(i in link){
   base <- rbind(base, GEIH)
 }
 
-#### LIMPIEZA DE DATOS ####
-summary(base)
-str(base)
-## Se realizo una tabla de datos vacios
-vacios <- data.frame(apply(X = is.na(base), MARGIN =2, FUN = sum))
-vacios$porcentaje_vacios <- round(vacios$apply.X...is.na.base...MARGIN...2..FUN...sum./32177,3)
-colnames(vacios)[1]<- "Cantidad_vacios"
+##############Filtro de la base de datos#######################################
+###############################################################################
 
-## Se seleccionan las varaibles de interés
-base2 <- base %>%
-  select(directorio,estrato1,sex,age,p6240,p6426,maxEducLevel,ocu,dsi,
-         y_total_m,y_total_m_ha,ingtot,ingtotob,microEmpresa,cuentaPropia,formal, 
-         oficio,p6210,p7090,hoursWorkUsual,relab,sizeFirm, college)
+## Se filtra la base para personas ocupadas menores de 18 años
+base_edad_ocu <- subset(base, base$age >= 18 & base$ocu == 1)
 
-## Se filtra la base ##
-base_filtrada <- subset(base2, base2$age >= 18 & base2$ocu == 1)
+###Se seleccionan las variables a utilizar
+base_filtrada <- select(base_edad_ocu, "estrato1",
+                        "sex",
+                        "age",
+                        "p6240",
+                        "p6426",
+                        "ina",
+                        "maxEducLevel",
+                        "ocu",
+                        "dsi",
+                        "y_total_m_ha")
+
+######### Estadísticas descriptivas ############################################
+#1)tabla con estadísticas descriptivas
+##Pasamos la base a tibble
+base_tibble<- as_tibble(base_filtrada)
+##generamos un reporte de las descriptivas
+descriptivas <- skim(base_tibble) 
+##se exporta
+install.packages('openxlsx')
+library(openxlsx)
+write.xlsx(descriptivas, "stores/Descriptivas.xlsx")
+
+##### Gráficos para interpretación
+
+# 1. Crear el histograma
+hist(b_final$estrato1)
+
+hist(base_filtrada$y_total_m_ha)
+hist(base_filtrada$maxEducLevel)
+hist(base_filtrada$p6240)
+
+#Se defninen las variables categoricas
+
+Categoricas <- c("estrato1","relab","sizeFirm","maxEducLevel","p6240")
+
+# Iterar a través de las columnas en el vector Categoricas
+for (v in Categoricas) {
+  # Seleccionar la columna v del dataframe b_final y convertirla en factor
+  b_final[, v] <- as.factor(b_final[, v, drop = TRUE])
+}
+
+
+edad <- ggplot(data = base_filtrada,
+               mapping = aes(x = age))  + 
+  geom_histogram(aes(y =after_stat(density)),
+                 bins = 5,
+                 position = 'identity',
+                 color="black", fill="gray" ) +
+  stat_function(fun = dnorm, xlim = c(min(base_filtrada$age),max(base_filtrada$age)), colour="green", linewidth=1,
+                args = list(mean = mean(base_filtrada$age), 
+                            sd = sd(base_filtrada$age))) + 
+  labs(title = 'Distribución de edad',
+       x = 'Edad',
+       y = 'Frecuencia') + 
+  theme_bw()
+
+edad
+
+
+Ingreso <- ggplot(data = base_filtrada,
+                  mapping = aes(x = y_total_m_ha))  + 
+  geom_histogram(aes(y =after_stat(density)),
+                 bins = 5,
+                 position = 'identity',
+                 color="black", fill="gray" ) +
+  stat_function(fun = dnorm, xlim = c(min(base_filtrada$y_total_m_ha),max(base_filtrada$y_total_m_ha)), colour="green", linewidth=1,
+                args = list(mean = mean(base_filtrada$y_total_m_ha), 
+                            sd = sd(base_filtrada$y_total_m_ha))) + 
+  labs(title = 'Distribución del ingreso',
+       x = 'Ingreso',
+       y = 'Frecuencia') + 
+  theme_bw()
+Ingreso
+
+histogram(b_final$y_total_m_ha)
+
+# Crear un gráfico de dispersión con una curva de suavizado en color
+scatter.smooth(b_final$age, b_final$y_total_m_ha, span = 2/3, degree = 1,
+               family = "symmetric",
+               xlab = "Edad", ylab = "Ingreso",
+               evaluation = 50, col = "blue") 
+title("Relación entre Edad e Ingreso")
+
+# Crear un gráfico de dispersión con una curva de suavizado en color
+scatter.smooth(b_final$estrato1, b_final$y_total_m_ha, span = 2/3, degree = 1,
+               family = "symmetric",
+               xlab = "Estrato", ylab = "Ingreso",
+               evaluation = 50, col = "green")  
+title("Relación entre Estrato e Ingreso")
+
+# Crear un gráfico de cajas y bigotes con estrato1 en el eje X y y_total_m_ha en el eje Y
+boxplot(b_final$y_total_m_ha ~ b_final$estrato1, 
+        xlab = "Estrato", ylab = "Ingreso",
+        main = "Ingreso vs Estrato")
+
+# Crear un gráfico de cajas y bigotes con relab en el eje X y y_total_m_ha en el eje Y
+boxplot(b_final$y_total_m_ha ~ b_final$relab, 
+        xlab = "Tipo de ocupación", ylab = "Ingreso",
+        main = "Ingreso vs Tipo de ocupación")
+
+
+scatter.smooth(b_final$hoursWorkUsual, b_final$y_total_m_ha, span = 2/3, degree = 1,
+               family = "symmetric",
+               xlab = "Horas trabajadas", ylab = "Ingreso",
+               evaluation = 50, col = "green")  
+title("Ingreso vs horas trabajadas")
+
+
+### Primero se hace un plot del ingreso para ver su distribución
+
+ggplot(data=base_filtrada)+ 
+  geom_smooth(mapping = aes(x =age, y =y_total_m_ha))+
+  scale_y_continuous (labels=function(n) {format(n, scientific = FALSE)})+
+  labs(x="Edad", y="Ingreso")
+
+ggplot(data=base_filtrada)+ 
+  geom_point(mapping = aes(x =age, y =y_total_m_ha))+
+  scale_y_continuous (labels=function(n) {format(n, scientific = FALSE)})+
+  labs(x="Edad", y="Ingreso")
+
+ +
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ## Se dispone a eliminar todos los vacios
 
@@ -195,3 +325,13 @@ scatter.smooth(b_final$hoursWorkUsual, b_final$y_total_m_ha, span = 2/3, degree 
                xlab = "Horas trabajadas", ylab = "Ingreso",
                evaluation = 50, col = "green")  
 title("Ingreso vs horas trabajadas")
+
+
+
+#### LIMPIEZA DE DATOS ####
+summary(base)
+str(base)
+## Se realizo una tabla de datos vacios
+vacios <- data.frame(apply(X = is.na(base), MARGIN =2, FUN = sum))
+vacios$porcentaje_vacios <- round(vacios$apply.X...is.na.base...MARGIN...2..FUN...sum./32177,3)
+colnames(vacios)[1]<- "Cantidad_vacios"
